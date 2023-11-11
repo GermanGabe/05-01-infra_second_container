@@ -1,0 +1,25 @@
+version: "3.3"
+services:
+
+  demo1:
+    image: "demo:v1"
+    container_name: "demo1-service"
+    expose: [8080]
+    networks:
+      - proxy
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+        #- "traefik.http.routers.demo1.rule=Host(`apps.max-paloma-babbie.xyz`)"
+      - "traefik.http.routers.demo1.rule=(Host(`apps.max-paloma-babbie.xyz` ) && PathPrefix(`/v1`))"
+      - "traefik.http.middlewares.demo1.stripprefix.prefixes=/v1"
+      - "traefik.http.routers.demo1.middlewares=demo1@docker"
+      - "traefik.http.middlewares.demo1.stripprefix.forceSlash=false" 
+      - "traefik.http.routers.demo1.entrypoints=websecure"
+        #      - "traefik.http.services.demo1.loadbalancer.server.port=80"
+
+
+networks:
+  proxy:
+    external: true

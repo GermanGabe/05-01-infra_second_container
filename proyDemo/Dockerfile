@@ -1,0 +1,21 @@
+FROM maven:3.8.3-openjdk-17  as builder
+WORKDIR /opt/app
+
+
+ARG GIT_USER=german.amezquita01
+ARG GIT_TOKEN=glpat-DKc984sw2778DT-rJHMW
+RUN git clone http://${GIT_USER}:${GIT_TOKEN}@ca.uptc.edu.co/german.amezquita01/siconvocatoriaback.git  apps
+
+
+
+WORKDIR /opt/app/apps
+RUN mvn clean
+RUN mvn install
+
+
+# step 2 - run images
+FROM openjdk:17-alpine
+WORKDIR /opt/app
+COPY --from=builder /opt/app/apps/target/*.jar /opt/app/api.jar
+ENTRYPOINT ["java", "-jar", "/opt/app/api.jar" ]
+

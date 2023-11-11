@@ -1,0 +1,5 @@
+http:
+  middlewares:
+    myauth:
+      basicAuth:
+        usersfile: /users.txt

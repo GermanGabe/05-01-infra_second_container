@@ -1,0 +1,25 @@
+version: "3.3"
+services:
+
+  front2:
+    image: "front:v2"
+    container_name: "front2-service"
+    expose: [80]
+    networks:
+      - proxy
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+        #- "traefik.http.routers.front2.rule=Host(`apps.max-paloma-babbie.xyz`)"
+      - "traefik.http.routers.front2.rule=(Host(`apps.max-paloma-babbie.xyz` ) && PathPrefix(`/demoapps`))"
+      - "traefik.http.middlewares.front2.stripprefix.prefixes=/f2"
+      - "traefik.http.routers.front2.middlewares=front2@docker"
+      - "traefik.http.middlewares.front2.stripprefix.forceSlash=false" 
+      - "traefik.http.routers.front2.entrypoints=websecure"
+        #      - "traefik.http.services.front2.loadbalancer.server.port=80"
+
+
+networks:
+  proxy:
+    external: true
