@@ -1,0 +1,23 @@
+version: "3.3"
+services:
+  convocatoria_dev:
+    image: "convocatoria_dev:1.0"
+    container_name: "convocatoria_dev-service"
+    expose: [8080]
+    networks:
+      - proxy
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+        #- "traefik.http.routers.convocatoria_dev.rule=Host(`apps.max-paloma-babbie.xyz`)"
+      - "traefik.http.routers.convocatoria_dev.rule=(Host(`apps.max-paloma-babbie.xyz` ) && PathPrefix(`/siConvocaBack-dev`))"
+      - "traefik.http.middlewares.convocatoria_dev.stripprefix.prefixes=/siConvocaBack-dev"
+      - "traefik.http.routers.convocatoria_dev.middlewares=convocatoria_dev@docker"
+      - "traefik.http.middlewares.convocatoria_dev.stripprefix.forceSlash=false" 
+      - "traefik.http.routers.convocatoria_dev.entrypoints=websecure"
+        #      - "traefik.http.services.convocatoria_dev.loadbalancer.server.port=80"
+
+networks:
+  proxy:
+    external: true

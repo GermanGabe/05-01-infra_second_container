@@ -1,0 +1,21 @@
+FROM maven:3.8.3-openjdk-17  as builder
+WORKDIR /opt/app
+
+
+ARG GIT_USER=germangabe
+ARG GIT_TOKEN=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
+RUN git clone http://${GIT_USER}:${GIT_TOKEN}@github.com/GermanGabe/04-01-convocatoria.git  apps
+
+
+WORKDIR /opt/app/apps
+RUN mvn clean
+RUN mvn install -Dspring.profiles.active=dev
+
+# step 2 - run images
+FROM openjdk:17-alpine
+WORKDIR /opt/app
+RUN echo "java -jar /opt/app/api.jar --spring.profiles.active=dev" > run.sh
+COPY --from=builder /opt/app/apps/target/*.jar /opt/app/api.jar
+#ENTRYPOINT ["java", "-jar", "/opt/app/api.jar --spring-profiles-active=dev" ]
+ENTRYPOINT ["sh", "run.sh" ]
+

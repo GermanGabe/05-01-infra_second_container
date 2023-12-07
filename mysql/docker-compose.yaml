@@ -1,0 +1,16 @@
+version: '3.3'
+services:
+  mysql:
+    image: mysql:5.7.44-oracle
+    container_name: mysql
+    restart: always
+    environment:
+            #    MYSQL_DATABASE: 'dbconvocatoriadev'
+            #      MYSQL_USER: 'adminconvocatoriadev'
+            #      MYSQL_PASSWORD: 'claveadminconvocatoriadev'
+      MYSQL_ROOT_PASSWORD: 'adminrootmysql'
+    ports:
+      - '3306:3306'
+    volumes:
+      - /mnt/mysql:/var/lib/mysql
+

@@ -1,0 +1,25 @@
+#https://www.nodinrogers.com/post/2022-03-10-certbot-cloudflare-docker/
+
+version: "2"
+
+services:
+  letsencrypt-cloudflare:
+    image: certbot/dns-cloudflare
+    command: certonly --dns-cloudflare --dns-cloudflare-credentials /opt/cloudflare/credentials --agree-tos --email german.amezquita@gmail.com  --dns-cloudflare-propagation-seconds 60  -d auth-dev.max-paloma-babbie.xyz 
+
+    volumes:
+      - ./cloudflare:/opt/cloudflare
+      - ./letsencrypt:/etc/letsencrypt
+      - ./letsencrypt/log:/var/log/letsencrypt
+
+
+
+
+
+#    command: certonly --dns-cloudflare --dns-cloudflare-credentials /opt/cloudflare/credentials --agree-tos --email german.amezquita@gmail.com  -d infra.max-paloma-babbie.xyz
+          #command: certonly --non-interactive --dns-cloudflare --dns-cloudflare-credentials /opt/cloudflare/credentials --agree-tos --email german.amezquita@gmail.com -d auth.max-paloma-babbie.xyz   --server https://acme-v02.api.letsencrypt.org/directory --dry-run
+#    command: certonly --dns-cloudflare --dns-cloudflare-credentials /opt/cloudflare/credentials --agree-tos --email german.amezquita@gmail.com  -d auth.max-paloma-babbie.xyz
+#    command: certonly --dns-cloudflare --dns-cloudflare-credentials /opt/cloudflare/credentials --agree-tos --email german.amezquita@gmail.com  -d distri01.max-paloma-babbie.xyz
+#,infra.max-paloma-babbie.xyz,service1.max-paloma-babbie.xyz
+      #    command: certonly --non-interactive --dns-cloudflare --dns-cloudflare-credentials /opt/cloudflare/credentials --agree-tos -d auth.max-paloma-babbie.xyz --server https://acme-v02.api.letsencrypt.org/directory
+      ###command: certonly --dns-cloudflare --dns-cloudflare-credentials /opt/cloudflare/credentials --agree-tos --email german.amezquita@gmail.com  --dns-cloudflare-propagation-seconds 60  -d auth-dev.max-paloma-babbie.xyz
